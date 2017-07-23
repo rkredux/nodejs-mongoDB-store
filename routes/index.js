@@ -2,7 +2,13 @@ const express = require("express"); //importing express from dependency
 const router = express.Router(); //create a router Object 
 const storeController = require("../controllers/storeController"); 
 
-router.get("/", storeController.myMiddleware, storeController.homePage); 
+
+// route for homepage
+router.get("/", storeController.homePage); 
+
+
+// route for add store page
+router.get("/add", storeController.addStore)
 
 // I am doing crazying things with my routes. 
 // I love node man!
@@ -22,6 +28,7 @@ router.get("/", storeController.myMiddleware, storeController.homePage);
 // 	const reverseName = req.params.name.split("").reverse().join("").trim(); 
 // 	res.send(reverseName); 
 // })
+router.post("/add", storeController.createStore); 
 
 module.exports = router; 
 
