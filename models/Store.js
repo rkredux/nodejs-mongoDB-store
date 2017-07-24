@@ -44,11 +44,13 @@ const storeSchema = new mongoose.Schema({
 // before the data is stored on the DB please 
 // do this
 storeSchema.pre("save", function(next){
+	console.log(this); 
 	if(!this.isModified("name")){
 		next(); 
 		return; 
 	}
 	this.slug = slug(this.name); 
+	console.log(this); 
 	next(); 
 }); 
 
