@@ -1,6 +1,7 @@
 const express = require("express"); //importing express from dependency
 const router = express.Router(); //create a router Object 
 const storeController = require("../controllers/storeController"); 
+const { catchErrors } = require("../handlers/errorHandlers"); 
 
 
 // route for homepage
@@ -28,7 +29,7 @@ router.get("/add", storeController.addStore)
 // 	const reverseName = req.params.name.split("").reverse().join("").trim(); 
 // 	res.send(reverseName); 
 // })
-router.post("/add", storeController.createStore); 
+router.post("/add", catchErrors(storeController.createStore)); 
 
 module.exports = router; 
 
