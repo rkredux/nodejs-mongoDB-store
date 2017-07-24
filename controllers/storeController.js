@@ -1,6 +1,8 @@
 // initialize an object 
 // let storeController = {}; 
 
+const mongoose = require("mongoose"); 
+const Store = mongoose.model("Store"); 
 
 // set functions as props in that object 
 exports.homePage = (req, res) => {
@@ -14,9 +16,12 @@ exports.addStore = (req, res) =>{
 // just use the keyword exports before 
 // every function and you are good to go. 
 
-exports.createStore = (req, res) => {
-	res.json(req.body); 
+exports.createStore = async (req, res) => {
+  const store = new Store(req.body);
+  await store.save(); //this returns a promise
+  res.redirect("/"); 
 }
+
 
 
 // let me rephrase it this way. Exports is a 
