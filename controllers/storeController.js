@@ -17,9 +17,10 @@ exports.addStore = (req, res) =>{
 // every function and you are good to go. 
 
 exports.createStore = async (req, res) => {
-  const store = new Store(req.body);
-  await store.save(); //this returns a promise
-  res.redirect("/"); 
+  const store = await (new Store(req.body)).save();
+  req.flash("success", `Successfully Created ${store.name}. Care 
+  	to leave a review?`); 
+  res.redirect(`/store/${store.slug}`); 
 }
 
 
@@ -27,7 +28,7 @@ exports.createStore = async (req, res) => {
 // let me rephrase it this way. Exports is a 
 // global variable that lives in every module.
 // you can export any function off of a module
-// by assigning it as a property of the global
+// by assigning iqt as a property of the global
 // exports variable and then creating a import
 // variable. The exported function will then be 
 // available as a property on the object created
