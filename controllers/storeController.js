@@ -23,7 +23,16 @@ exports.createStore = async (req, res) => {
   res.redirect(`/store/${store.slug}`); 
 }
 
-
+exports.getStores = async(req, res) => {
+	// query our database for a list of all the 
+	// stores. 
+	const stores = await Store.find(); 
+	// console.log(stores); 
+	res.render("stores", {title: "STORES", stores});  
+	//stores.pug template now gets the locals obejct 
+	//which has the title and stores keys with values
+	//"STORES" AND Stores (const defined above)
+}
 
 // let me rephrase it this way. Exports is a 
 // global variable that lives in every module.
