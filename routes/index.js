@@ -5,12 +5,19 @@ const { catchErrors } = require("../handlers/errorHandlers");
 
 
 // route for homepage
-router.get("/", storeController.homePage); 
+router.get("/", catchErrors(storeController.getStores)); 
 
+router.get("/stores", catchErrors(storeController.getStores)); 
 
 // route for add store page
-router.get("/add", storeController.addStore)
+router.get("/add", storeController.addStore); 
 
+router.post("/add", catchErrors(storeController.createStore)); 
+
+module.exports = router; 
+
+
+// Just some comments below. 
 // I am doing crazying things with my routes. 
 // I love node man!
 // req.send
@@ -29,8 +36,3 @@ router.get("/add", storeController.addStore)
 // 	const reverseName = req.params.name.split("").reverse().join("").trim(); 
 // 	res.send(reverseName); 
 // })
-router.post("/add", catchErrors(storeController.createStore)); 
-
-module.exports = router; 
-
-
