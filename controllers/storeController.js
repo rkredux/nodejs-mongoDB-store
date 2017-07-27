@@ -34,6 +34,23 @@ exports.getStores = async(req, res) => {
 	//"STORES" AND Stores (const defined above)
 }
 
+exports.editStore = async(req, res) =>{
+	// res.json(req.params.id); 
+	const store = await Store.findOne({_id: req.params.id}); 
+	// res.json(store); 
+	res.render("editStore", {title: `Edit ${store.name}`, store})
+}
+
+exports.updateStore = async (req, res) => {
+	const store = await Store.findOneAndUpdate({_id: req.params.id},
+		req.body, {
+			new:true,
+			runValidators:true//return the new store insead of the old one
+		}).exec();
+	req.flash("success", `Successfully updated <strong>${store.name}</strong><a href="/stores/${store.slug}"> View Store -> </a>`)
+	res.redirect(`/stores/${store._id}/edit`); 
+}
+
 // let me rephrase it this way. Exports is a 
 // global variable that lives in every module.
 // you can export any function off of a module
