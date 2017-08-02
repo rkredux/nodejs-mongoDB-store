@@ -7,15 +7,29 @@ const { catchErrors } = require("../handlers/errorHandlers");
 // route for homepage
 router.get("/", catchErrors(storeController.getStores)); 
 
+
 router.get("/stores", catchErrors(storeController.getStores)); 
+
 
 // route for add store page
 router.get("/add", storeController.addStore); 
 
+
 router.get(`/stores/:id/edit`, catchErrors(storeController.editStore)); 
 
-router.post("/add", catchErrors(storeController.createStore));
-router.post(`/add/:id`, catchErrors(storeController.updateStore));
+
+router.post("/add", 
+	storeController.upload, 
+	catchErrors(storeController.resize), 
+	catchErrors(storeController.createStore)
+);
+
+
+router.post(`/add/:id`,
+    storeController.upload, 
+	catchErrors(storeController.resize),  
+	catchErrors(storeController.updateStore)
+);
 
 
 module.exports = router; 
