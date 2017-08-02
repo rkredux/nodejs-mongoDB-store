@@ -4,10 +4,39 @@
 const mongoose = require("mongoose"); 
 const Store = mongoose.model("Store"); 
 
+
+//set up the multer
+const multer = require("multer"); 
+const multerOptions = {
+
+	storage: multer.memoryStorage(), 
+
+	fileFilter(req, file, next){
+		const isPhoto = file.mimetype.startsWith("image/");
+		if (isPhoto){
+			next(null, true); 
+		} else{
+			next({message: "That filetype isn't allowed!"}, false); 
+		}
+	}
+
+}
+
+
+//set up the jimp for image re-sizing
+ const jimp = require("jimp"); 
+
+
+ // set up unique identifier to generate unique ids for photos
+ const uuid = require("uuid"); 
+
+
+
 // set functions as props in that object 
 exports.homePage = (req, res) => {
 	res.render("index"); 
 }
+
 
 exports.addStore = (req, res) =>{
 	res.render("editStore", {title: "Add Store"}); 
@@ -15,6 +44,27 @@ exports.addStore = (req, res) =>{
 // there can be as many as you want
 // just use the keyword exports before 
 // every function and you are good to go. 
+
+
+//middleware for server side validation of photoupload
+exports.upload = multer(multerOptions).single("photo");
+
+
+//middleware for uploaded image-resizing 
+exports.resize = async(req, res, next) => {
+	if(!req.file){
+		next(); 
+		return; 
+	}
+	const extension = req.file.mimetype.split("/")[1]; 
+	req.body.photo = `${uuid.v4()}.${extension}`; 
+	//now we resize
+	const photo = await jimp.read(req.file.buffer); 
+	await photo.resize(800, jimp.AUTO); 
+	await photo.write(`./public/uploads/${req.body.photo}`)
+	next(); 
+}; 
+
 
 exports.createStore = async (req, res) => {
   const store = await (new Store(req.body)).save();
