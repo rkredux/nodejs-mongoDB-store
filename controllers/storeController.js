@@ -66,12 +66,16 @@ exports.resize = async(req, res, next) => {
 }; 
 
 
+
+
 exports.createStore = async (req, res) => {
   const store = await (new Store(req.body)).save();
   req.flash("success", `Successfully Created ${store.name}. Care 
   	to leave a review?`); 
   res.redirect(`/store/${store.slug}`); 
 }
+
+
 
 exports.getStores = async(req, res) => {
 	// query our database for a list of all the 
@@ -84,12 +88,29 @@ exports.getStores = async(req, res) => {
 	//"STORES" AND Stores (const defined above)
 }
 
+
+
+
+exports.viewStore = async (req, res, next) => {
+	const storeSlugName = req.params.match; 
+	const store = await Store.findOne({slug: storeSlugName}); 
+	if (!store){
+		return next(); 
+	}  
+	res.render("displayStore", {title: `${store.name}`, store}); 
+}
+
+
+
+
 exports.editStore = async(req, res) =>{
 	// res.json(req.params.id); 
-	const store = await Store.findOne({_id: req.params.id}); 
+	const store = await Store.findOne({_id: req.params.id});
 	// res.json(store); 
 	res.render("editStore", {title: `Edit ${store.name}`, store})
 }
+
+
 
 exports.updateStore = async (req, res) => {
 	req.body.location.type = "Point"; 
