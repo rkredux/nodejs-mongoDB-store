@@ -65,14 +65,18 @@ const storeSchema = new mongoose.Schema({
 
 // before the data is stored on the DB please 
 // do this
-storeSchema.pre("save", function(next){
-	console.log(this); 
+storeSchema.pre("save", async function(next){
 	if(!this.isModified("name")){
-		next(); ``
+		next(); 
 		return; 
 	}
 	this.slug = slug(this.name); 
-	console.log(this); 
+	const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, "i"); 
+	console.log(this.constructor); 
+	const storesWithSlug = await this.constructor.find({slug: slugRegEx }); 
+	if(storesWithSlug.length){
+		this.slug = `${this.slug} - ${storesWithSlug.length + 1}`; 
+	}
 	next(); 
 }); 
 
