@@ -6,7 +6,7 @@ const slug = require("slugs");
 const md5 = require("md5"); 
 const validator = require("validator"); 
 const mongodbErrorHandler = require("mongoose-mongodb-errors"); 
-const passportLocalMongoose = require("password-local-mongoose"); 
+const passportLocalMongoose = require("passport-local-mongoose"); 
 
 
 
@@ -29,9 +29,11 @@ const userSchema = new Schema({
 		required: "Please supply a name"
 	}
 
-	userSchema.plugin(passportLocalMongoose, {usernameField: "email"}); 
-	userSchema.plugin(mongodbErrorHandler); 
 }); 
+
+userSchema.plugin(passportLocalMongoose, {usernameField: "email"}); 
+userSchema.plugin(mongodbErrorHandler); 
+
 
 
 // before the data is stored on the DB please 

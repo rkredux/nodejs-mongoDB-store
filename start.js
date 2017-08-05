@@ -22,6 +22,7 @@ mongoose.connection.on('error', (err) => {
 //Store.js in models folder is now going to be available
 //through out the application
 require("./models/Store"); 
+require("./models/User"); 
 
 
 // Start our app!

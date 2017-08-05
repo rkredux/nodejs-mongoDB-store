@@ -3,6 +3,8 @@ const router = express.Router(); //create a router Object
 const storeController = require("../controllers/storeController"); 
 const { catchErrors } = require("../handlers/errorHandlers"); 
 const userController = require("../controllers/userController"); 
+const authController = require("../controllers/authController"); 
+
 
 
 // route for homepage
@@ -46,7 +48,10 @@ router.get("/login", userController.loginForm);
 // 2. register the user
 // 3. we need to log them in
 
-router.post("/register", userController.validateRegister); 
+router.post("/register", 
+	userController.validateRegister,
+	userController.register, 
+	authController.login); 
 // router.post("/login", userController.loginForm); 
 
 
