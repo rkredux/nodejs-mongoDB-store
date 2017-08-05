@@ -2,6 +2,7 @@ const express = require("express"); //importing express from dependency
 const router = express.Router(); //create a router Object 
 const storeController = require("../controllers/storeController"); 
 const { catchErrors } = require("../handlers/errorHandlers"); 
+const userController = require("../controllers/userController"); 
 
 
 // route for homepage
@@ -36,6 +37,17 @@ router.post(`/add/:id`,
 
 
 router.get(`/store/:match`, catchErrors(storeController.viewStore)); 
+
+router.get("/register", userController.registerForm); 
+router.get("/login", userController.loginForm); 
+
+
+// 1. validate the registration data
+// 2. register the user
+// 3. we need to log them in
+
+router.post("/register", userController.validateRegister); 
+// router.post("/login", userController.loginForm); 
 
 
 
