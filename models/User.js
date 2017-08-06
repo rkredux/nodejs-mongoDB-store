@@ -33,25 +33,9 @@ const userSchema = new Schema({
 
 userSchema.plugin(passportLocalMongoose, {usernameField: "email"}); 
 userSchema.plugin(mongodbErrorHandler); 
-
-
-
-// before the data is stored on the DB please 
-// do this
-// userSchema.pre("save", async function(next){
-// 	if(!this.isModified("name")){
-// 		next(); 
-// 		return; 
-// 	}
-// 	this.slug = slug(this.name); 
-// 	const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, "i"); 
-// 	console.log(this.constructor); 
-// 	const storesWithSlug = await this.constructor.find({slug: slugRegEx }); 
-// 	if(storesWithSlug.length){
-// 		this.slug = `${this.slug} - ${storesWithSlug.length + 1}`; 
-// 	}
-// 	next(); 
-// }); 
-
+userSchema.virtual("gravatar").get(function(){
+	const hash = md5(this.email); 
+	return `https://gravatar.com/avatar/${hash}?s=200`; 
+}); 
 
 module.exports = mongoose.model("User", userSchema);
