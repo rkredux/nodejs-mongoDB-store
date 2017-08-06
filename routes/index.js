@@ -16,7 +16,7 @@ router.get("/stores", catchErrors(storeController.getStores));
 
 
 // route for add store page
-router.get("/add", storeController.addStore); 
+router.get("/add", authController.isLoggedIn, storeController.addStore); 
 
 
 // route for edit sotre page
@@ -42,7 +42,7 @@ router.get(`/store/:match`, catchErrors(storeController.viewStore));
 
 router.get("/register", userController.registerForm); 
 router.get("/login", userController.loginForm); 
-
+router.post("/login", authController.login); 
 
 // 1. validate the registration data
 // 2. register the user
@@ -51,9 +51,12 @@ router.get("/login", userController.loginForm);
 router.post("/register", 
 	userController.validateRegister,
 	userController.register, 
-	authController.login); 
+	authController.login
+	); 
 // router.post("/login", userController.loginForm); 
 
+
+router.get("/logout", authController.logout); 
 
 
 module.exports = router; 
