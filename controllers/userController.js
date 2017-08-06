@@ -45,6 +45,27 @@ exports.register = async (req, res, next) => {
 }; 
 
 
+exports.account = (req, res) =>{
+	res.render("account", {title: "Edit your account"}); 
+}; 
+
+
+exports.updateAccount = async(req, res) => {
+
+	const updates = { //you are making an update object
+		name: req.body.name, 
+		email: req.body.email
+	}; 
+
+	const user = await User.findOneAndUpdate(
+		{ _id: req.user._id}, //query to find the user in the DB
+		{$set: updates}, //update the database
+		{new: true, runValidators:true, context: "query"});  //return the new user
+	req.flash("success", "Your account is updated!"); 
+	res.redirect("/account"); 
+}; 
+
+
 
 
 
