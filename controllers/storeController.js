@@ -19,7 +19,6 @@ const multerOptions = {
 			next({message: "That filetype isn't allowed!"}, false); 
 		}
 	}
-
 }
 
 
@@ -69,6 +68,7 @@ exports.resize = async(req, res, next) => {
 
 
 exports.createStore = async (req, res) => {
+  req.body.author = req.user._id; 
   const store = await (new Store(req.body)).save();
   req.flash("success", `Successfully Created ${store.name}. Care 
   	to leave a review?`); 
@@ -101,11 +101,16 @@ exports.viewStore = async (req, res, next) => {
 }
 
 
-
+const confirmOwner = (store, user) =>{
+	if(!store.author.equals(user._id)){
+		throw Error("You must own a store in order to edit it"); 
+	}
+}
 
 exports.editStore = async(req, res) =>{
 	// res.json(req.params.id); 
 	const store = await Store.findOne({_id: req.params.id});
+	confirmOwner(store, req.user); 
 	// res.json(store); 
 	res.render("editStore", {title: `Edit ${store.name}`, store})
 }
@@ -121,6 +126,14 @@ exports.updateStore = async (req, res) => {
 		}).exec();
 	req.flash("success", `Successfully updated <strong>${store.name}</strong><a href="/stores/${store.slug}"> View Store -> </a>`)
 	res.redirect(`/stores/${store._id}/edit`); 
+}
+
+
+
+exports.getStoreBySlug = async (req, res, next) =>{
+	const store = await Store.findOne({slug: req.params.slug}).populate("author"); 
+	if(!store) return next(); 
+	res.render("store", {store, title:store.name}); 
 }
 
 // let me rephrase it this way. Exports is a 
