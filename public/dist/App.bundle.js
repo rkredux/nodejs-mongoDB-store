@@ -81,12 +81,15 @@ function autocomplete(input, latInput, lngInput) {
 	if (!input) return;
 	console.log(input, latInput, lngInput);
 
-	var dropdown = new goolge.map.places.Autocomplete(input);
+	var dropdown = new goolge.maps.places.Autocomplete(input);
 	dropdown.addListener("place_changed", function () {
 		var place = dropdown.getPlace();
+		console.log(place);
 		latInput.value = place.geometry.location.lat();
 		lngInput.value = place.geometry.location.lng();
 	});
+
+	console.log("This is running");
 
 	input.on("keydown", function (e) {
 		if (e.keyCode === 13) e.preventDefault();
@@ -148,6 +151,7 @@ var _autocomplete2 = _interopRequireDefault(_autocomplete);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// console.log("This is running"); 
 (0, _autocomplete2.default)((0, _bling.$)("#address"), (0, _bling.$)("#lat"), (0, _bling.$)("#lng"));
 
 /***/ })
