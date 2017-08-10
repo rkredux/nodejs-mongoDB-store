@@ -73,6 +73,13 @@ const storeSchema = new mongoose.Schema({
 })
 
 
+// Define our index. 
+storeSchema.index({
+	name: "text", 
+	description: "text"
+}); 
+
+
 // before the data is stored on the DB please 
 // do this
 storeSchema.pre("save", async function(next){
