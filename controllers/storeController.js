@@ -103,9 +103,10 @@ exports.viewStore = async (req, res, next) => {
 
 const confirmOwner = (store, user) =>{
 	if(!store.author.equals(user._id)){
-		throw Error("You must own a store in order to edit it"); 
+		throw Error("You must own a store in order to edit it");
 	}
 }
+
 
 exports.editStore = async(req, res) =>{
 	// res.json(req.params.id); 
@@ -134,6 +135,27 @@ exports.getStoreBySlug = async (req, res, next) =>{
 	const store = await Store.findOne({slug: req.params.slug}).populate("author"); 
 	if(!store) return next(); 
 	res.render("store", {store, title:store.name}); 
+}
+
+exports.searchStores = async(req, res) =>{
+	// req.query.name
+	const stores = await Store
+	// find first
+	.find({
+		$text:{
+			$search: req.query.q
+		}
+	}, {
+		score: {$meta: "textScore"}
+	})
+	// sort them per their scores
+	.sort({
+		score: {$meta: "textScore"}
+	})
+	// limit the result to 5
+	.limit(5); 
+	
+	res.json(stores); 
 }
 
 // let me rephrase it this way. Exports is a 
