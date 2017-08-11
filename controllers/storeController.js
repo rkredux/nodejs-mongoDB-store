@@ -2,15 +2,16 @@
 // let storeController = {}; 
 
 const mongoose = require("mongoose"); 
+
+// Store is a new collection that is 
+// being created in mongoDB 
 const Store = mongoose.model("Store"); 
 
 
 //set up the multer
 const multer = require("multer"); 
 const multerOptions = {
-
 	storage: multer.memoryStorage(), 
-
 	fileFilter(req, file, next){
 		const isPhoto = file.mimetype.startsWith("image/");
 		if (isPhoto){
@@ -68,13 +69,16 @@ exports.resize = async(req, res, next) => {
 
 
 exports.createStore = async (req, res) => {
+
   req.body.author = req.user._id; 
+  // insert the document in your mongoDB database
   const store = await (new Store(req.body)).save();
+  // flash the success message after insertion is done
   req.flash("success", `Successfully Created ${store.name}. Care 
   	to leave a review?`); 
+  // redirect to the store inserted
   res.redirect(`/store/${store.slug}`); 
 }
-
 
 
 exports.getStores = async(req, res) => {
@@ -154,7 +158,7 @@ exports.searchStores = async(req, res) =>{
 	})
 	// limit the result to 5
 	.limit(5); 
-	
+
 	res.json(stores); 
 }
 

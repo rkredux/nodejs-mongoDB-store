@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -132,16 +132,26 @@ exports.$$ = $$;
 /* 2 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: SyntaxError: Unexpected token, expected , (34:83)\n\n\u001b[0m \u001b[90m 32 | \u001b[39m\t\t     \u001b[33m.\u001b[39mthen((res) \u001b[33m=>\u001b[39m{\n \u001b[90m 33 | \u001b[39m\t\t     \t\u001b[36mif\u001b[39m(res\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39mlength){    \t\t\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 34 | \u001b[39m\t\t     \t\tsearchResults\u001b[33m.\u001b[39minnerHTML \u001b[33m=\u001b[39m dompurify\u001b[33m.\u001b[39msanitize((searchResultsHTML(res\u001b[33m.\u001b[39mdata))\u001b[33m;\u001b[39m  \n \u001b[90m    | \u001b[39m\t\t     \t\t                                                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 35 | \u001b[39m\t\t     \t\t\u001b[36mreturn\u001b[39m\u001b[33m;\u001b[39m \n \u001b[90m 36 | \u001b[39m\t\t     \t} \n \u001b[90m 37 | \u001b[39m\t\t     \tsearchResults\u001b[33m.\u001b[39minnertHTML \u001b[33m=\u001b[39m dompurify\u001b[33m.\u001b[39msanitize(\u001b[32m`<div class=\"search__result\">Found no stores for ${this.value}</div>`\u001b[39m)\u001b[33m;\u001b[39m \u001b[0m\n");
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(2);
+__webpack_require__(3);
+
+var _typeAhead = __webpack_require__(2);
+
+var _typeAhead2 = _interopRequireDefault(_typeAhead);
 
 var _bling = __webpack_require__(1);
 
@@ -153,6 +163,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // console.log("This is running"); 
 (0, _autocomplete2.default)((0, _bling.$)("#address"), (0, _bling.$)("#lat"), (0, _bling.$)("#lng"));
+(0, _typeAhead2.default)((0, _bling.$)(".search"));
 
 /***/ })
 /******/ ]);
