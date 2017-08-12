@@ -31,7 +31,7 @@ function typeAhead (search){
 		     .get(`/api/search?q=${this.value}`)
 		     .then((res) =>{
 		     	if(res.data.length){    		
-		     		searchResults.innerHTML = dompurify.sanitize((searchResultsHTML(res.data));  
+		     		searchResults.innerHTML = dompurify.sanitize((searchResultsHTML(res.data)));  
 		     		return; 
 		     	} 
 		     	searchResults.innertHTML = dompurify.sanitize(`<div class="search__result">Found no stores for ${this.value}</div>`); 

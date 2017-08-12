@@ -162,6 +162,34 @@ exports.searchStores = async(req, res) =>{
 	res.json(stores); 
 }
 
+
+exports.mapStores = async(req, res) =>{
+	const coordinates = [req.query.lng, req.query.lat].map(parseFloat); 
+	// res.json({it: "worked"}); 
+	const q = {
+		location: {
+			$near: {
+				$geometry:{
+					type: "Point",
+					coordinates
+				}, 
+				$maxDistance: 10000
+			}
+		}
+	}; 
+
+	const stores = await Store.find(q).select("slug name description location photo").limit(10); 
+	if(!stores){
+		return res.send("No store found"); 
+	}
+	res.json(stores); 
+}
+
+
+exports.mapPage = (req, res) =>{
+	res.render("map", {title: "MAP"}); 
+}; 
+
 // let me rephrase it this way. Exports is a 
 // global variable that lives in every module.
 // you can export any function off of a module

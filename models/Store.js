@@ -76,8 +76,14 @@ const storeSchema = new mongoose.Schema({
 // Define our index. 
 storeSchema.index({
 	name: "text", 
-	description: "text"
+	description: "text", 
+	location: "2dsphere"
 }); 
+
+
+// storeSchema.index({
+// 	location: "2dsphere"
+// }); 
 
 
 // before the data is stored on the DB please 
