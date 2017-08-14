@@ -4,6 +4,7 @@ const storeController = require("../controllers/storeController");
 const { catchErrors } = require("../handlers/errorHandlers"); 
 const userController = require("../controllers/userController"); 
 const authController = require("../controllers/authController"); 
+const reviewController = require("../controllers/reviewController"); 
 
 
 
@@ -64,6 +65,8 @@ router.get("/account/reset/:token", catchErrors(authController.reset));
 router.post("/account/reset/:token", authController.confirmedPasswords, catchErrors(authController.update));
 router.get("/map", storeController.mapPage );  
 router.get("/hearts", authController.isLoggedIn, catchErrors(storeController.getHearts)); 
+router.post("/reviews/:id", authController.isLoggedIn, catchErrors(reviewController.addReview)); 
+
 
 // API endpoints are going to be here
 router.get("/api/search", catchErrors(storeController.searchStores)); 

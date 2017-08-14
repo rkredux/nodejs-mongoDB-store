@@ -23,6 +23,7 @@ mongoose.connection.on('error', (err) => {
 //through out the application
 require("./models/Store"); 
 require("./models/User"); 
+require("./models/Review"); 
 
 
 // Start our app!

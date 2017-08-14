@@ -16,6 +16,7 @@ require("./handlers/passport");
 
 // create our Express app
 const app = express();
+console.log("Checked in"); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views')); // this is the folder where we keep our pug files

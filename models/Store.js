@@ -77,7 +77,11 @@ const storeSchema = new mongoose.Schema({
 storeSchema.index({
 	name: "text", 
 	description: "text", 
-	location: "2dsphere"
+}); 
+
+storeSchema.index({
+	location: "2dsphere", 
+	"background": false
 }); 
 
 
