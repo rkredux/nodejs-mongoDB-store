@@ -85,9 +85,34 @@ exports.createStore = async (req, res) => {
 exports.getStores = async(req, res) => {
 	// query our database for a list of all the 
 	// stores. 
-	const stores = await Store.find(); 
+	const page = req.params.page || 1
+	const limit = 4; 
+	const skip = (page * limit) - limit; 
+
+
+	const storesPromise = Store
+	               .find()
+	               .skip(skip)
+	               .limit(limit)
+	               .sort({created: "desc"})
+	               .populate("reviews"); 
+
+
+	const countPromise = Store.count(); 
+
+	const [stores, count] = await Promise.all([storesPromise, countPromise]); 
+
+	const pages = Math.ceil(count / limit); 
+
+	if(!store.length && skip){
+		req.flash("info", `Hey you asked for page ${page}. But that doesnot exist. 
+			So I put you on page ${pages}`); 
+		res.redirect(`/stores/page/${pages}`)
+		return; 
+	}
+
 	// console.log(stores); 
-	res.render("stores", {title: "STORES", stores});  
+	res.render("stores", {title: "STORES", stores, page, pages, count});  
 	//stores.pug template now gets the locals obejct 
 	//which has the title and stores keys with values
 	//"STORES" AND Stores (const defined above)
@@ -209,6 +234,13 @@ exports.getHearts = async(req, res) => {
 		_id: {$in: req.user.hearts}
 	}); 
 	res.render("stores", {title: "Hearted Stores", stores }); 
+}
+
+
+exports.getTopStores = async (req, res) =>{
+	const stores = await Store.getTopStores();
+	// res.json(stores);  
+	res.render("topStores", {stores, title: "Top Stores!"}); 
 }
 
 // let me rephrase it this way. Exports is a 

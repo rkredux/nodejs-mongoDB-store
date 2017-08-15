@@ -62,7 +62,9 @@ exports.updateAccount = async(req, res) => {
 		{$set: updates}, //update the database
 		{new: true, runValidators:true, context: "query"});  //return the new user
 	req.flash("success", "Your account is updated!"); 
-	res.redirect("/account"); 
+	res.redirect("/account"); //when you are 
+	//redirecting use the view path not just the 
+	//name! This is important. 
 }; 
 
 

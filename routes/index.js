@@ -14,6 +14,7 @@ router.get("/", catchErrors(storeController.getStores));
 
 // route for stores page
 router.get("/stores", catchErrors(storeController.getStores)); 
+router.get("/stores/page/:page", catchErrors(storeController.getStores)); 
 
 
 // route for add store page
@@ -66,6 +67,7 @@ router.post("/account/reset/:token", authController.confirmedPasswords, catchErr
 router.get("/map", storeController.mapPage );  
 router.get("/hearts", authController.isLoggedIn, catchErrors(storeController.getHearts)); 
 router.post("/reviews/:id", authController.isLoggedIn, catchErrors(reviewController.addReview)); 
+router.get("/top", catchErrors(storeController.getTopStores));
 
 
 // API endpoints are going to be here

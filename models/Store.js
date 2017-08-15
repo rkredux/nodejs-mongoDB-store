@@ -75,8 +75,10 @@ const storeSchema = new mongoose.Schema({
 	toObject: {virtuals: true}
 }); 
 
+// store schema definition ends here
 
-// Define our index. 
+
+// Define our store collection index. 
 storeSchema.index({
 	name: "text", 
 	description: "text", 
@@ -111,6 +113,40 @@ storeSchema.pre("save", async function(next){
 }); 
 
 
+storeSchema.statics.getTagList = function(){
+	return this.aggregate([
+		{$unwind: "$tags"}, 
+		{$group: {_id: "$tags", count: {$sum: 1}}}, 
+		{$sort: { count: -1}}
+	]); 
+}; 
+
+storeSchema.statics.getTopStores = function(){
+	return this.aggregate([
+		{$lookup: 
+			{ from: "reviews", localField: "_id", foreignField: "store", 
+		as: "reviews"
+	        }
+	    }, 
+
+	    {$match: { "reviews.1": {$exists: true}}}, 
+
+	    {$project: {
+	    	photo: "$$ROOT.photo", 
+	    	name: "$$ROOT.name", 
+	    	reviews: "$$ROOT.reviews", 
+	    	slug: "$$ROOT.slug", 
+	    	averageRating: {$sum: "$reviews.rating"}
+	    }}, 
+
+	    {$sort: {averageRating: -1}}, 
+
+	    {$limit: 10}
+
+	]); 
+}; 
+
+
 //find reviews where the store's id property === Review's store property
 storeSchema.virtual("reviews",{
 	ref: "Review", //what model to link
@@ -119,6 +155,24 @@ storeSchema.virtual("reviews",{
 }); 
 
 
+
+// next means it is some sort of middleware
+// this autopopulate function is going to be 
+// called from the storeSchema.pre call just below it. 
+
+// this is going to autopopulate 
+// the store reviews every time the store 
+// is queried
+function autopopulate(next){
+	this.populate("reviews"); 
+	next(); 
+}
+
+
+// call the autopopulate function just above this
+// everytime the Store collection is queried. 
+storeSchema.pre("find", autopopulate); 
+storeSchema.pre("findOne", autopopulate); 
 
 // export this model for me please 
 // the right side of the = operatore actually 
