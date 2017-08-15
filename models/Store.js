@@ -70,7 +70,10 @@ const storeSchema = new mongoose.Schema({
 		required: "You must supply an author"
 	}
 
-})
+}, {	
+	toJSON: {virtuals: true}, 
+	toObject: {virtuals: true}
+}); 
 
 
 // Define our index. 
@@ -106,6 +109,15 @@ storeSchema.pre("save", async function(next){
 	}
 	next(); 
 }); 
+
+
+//find reviews where the store's id property === Review's store property
+storeSchema.virtual("reviews",{
+	ref: "Review", //what model to link
+	localField: "_id", //which field on the store
+	foreignField: "store" //which on the review
+}); 
+
 
 
 // export this model for me please 
