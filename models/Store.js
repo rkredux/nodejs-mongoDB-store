@@ -81,18 +81,13 @@ const storeSchema = new mongoose.Schema({
 // Define our store collection index. 
 storeSchema.index({
 	name: "text", 
-	description: "text", 
+	description: "text"
 }); 
 
 storeSchema.index({
-	location: "2dsphere", 
-	"background": false
+	location: "2dsphere"
 }); 
 
-
-// storeSchema.index({
-// 	location: "2dsphere"
-// }); 
 
 
 // before the data is stored on the DB please 
