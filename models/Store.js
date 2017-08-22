@@ -104,7 +104,7 @@ storeSchema.pre("save", async function(next){
 	}
 	this.slug = slug(this.name); 
 	const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, "i"); 
-	console.log(this.constructor); 
+	// console.log(this.constructor); 
 	const storesWithSlug = await this.constructor.find({slug: slugRegEx }); 
 	if(storesWithSlug.length){
 		this.slug = `${this.slug} - ${storesWithSlug.length + 1}`; 
@@ -113,13 +113,25 @@ storeSchema.pre("save", async function(next){
 }); 
 
 
-storeSchema.statics.getTagList = function(){
+storeSchema.statics.getTagsList = function(){
+	// all the static methods use this keyword 
+	// so we must use proper functions and not 
+	// arrow functions. 
+
+
+	// custom Aggregations in mongoDB is the most
+	//sensational feature I have seen so far
+	// Aggregation pipeline is an array of operators
+	//see below
 	return this.aggregate([
 		{$unwind: "$tags"}, 
 		{$group: {_id: "$tags", count: {$sum: 1}}}, 
 		{$sort: { count: -1}}
 	]); 
 }; 
+
+
+
 
 storeSchema.statics.getTopStores = function(){
 	return this.aggregate([

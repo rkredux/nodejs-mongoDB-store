@@ -1006,10 +1006,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function ajaxHeart(e) {
 	var _this = this;
 
-	e.prevenDefault();
+	// console.log("Heart pressed"); 
+	e.preventDefault(); //this prevent default does not
+	//let the browser post the form data to the server 
+	//instead we use the axios lib to connect to our
+	//server and send over our data. 
+
+
+	// this is the first time we are using the post 
+	//method of the axios library.  Note this very 
+	//very carefully. 
+
 	_axios2.default.post(this.action).then(function (res) {
 		var isHearted = _this.heart.classList.toggle("heart__button--hearted");
-		(0, _bling.$)(".heart-count").textContent = res.data.heart.length;
+		(0, _bling.$)(".heart-count").textContent = res.data.hearts.length;
 		if (isHearted) {
 			_this.heart.classList.add("heart__button--float");
 			setTimeout(function () {
@@ -2845,7 +2855,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _map2.default)((0, _bling.$)("#map"));
 
 var heartForms = (0, _bling.$$)("form.heart");
-console.log(heartForms);
+
 heartForms.on("submit", _heart2.default);
 
 /***/ })

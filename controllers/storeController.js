@@ -86,7 +86,7 @@ exports.getStores = async(req, res) => {
 	// query our database for a list of all the 
 	// stores. 
 	const page = req.params.page || 1
-	const limit = 4; 
+	const limit = 6; 
 	const skip = (page * limit) - limit; 
 
 
@@ -234,14 +234,25 @@ exports.getHearts = async(req, res) => {
 		_id: {$in: req.user.hearts}
 	}); 
 	res.render("stores", {title: "Hearted Stores", stores }); 
-}
+}; 
 
 
 exports.getTopStores = async (req, res) =>{
 	const stores = await Store.getTopStores();
 	// res.json(stores);  
 	res.render("topStores", {stores, title: "Top Stores!"}); 
-}
+}; 
+
+exports.getStoresByTag = async(req, res) =>{
+	const tag = req.params.tag; 
+	const tagQuery = tag || {$exists: true}
+	const tagsPromise = Store.getTagsList(); 
+	const storesPromise = Store.find({tags:tagQuery})
+	const [tags, stores] = await Promise.all([tagsPromise, storesPromise]);
+	// res.json(stores); 
+	res.render("tags", {tags , title: "Tags", tag, stores}); 
+}; 
+
 
 // let me rephrase it this way. Exports is a 
 // global variable that lives in every module.

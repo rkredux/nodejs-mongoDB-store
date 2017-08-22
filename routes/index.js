@@ -57,6 +57,8 @@ router.post("/register",
 	); 
 // router.post("/login", userController.loginForm); 
 
+router.get("/tags", catchErrors(storeController.getStoresByTag)); 
+router.get("/tags/:tag", catchErrors(storeController.getStoresByTag)); 
 
 router.get("/logout", authController.logout); 
 router.get("/account", authController.isLoggedIn, userController.account); 
