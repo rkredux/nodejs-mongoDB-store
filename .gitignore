@@ -1,3 +1,11 @@
+node_modules/
 .DS_Store
 variables.env
+variables.env.now
 package-lock.json
+*log
+idea
+haters/
+
+
+
